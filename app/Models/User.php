@@ -3,10 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Jobs\SendLoginOtpJob;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -20,17 +23,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
     ];
 
     /**
@@ -40,5 +32,47 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'mobile_verified_at' => 'datetime',
+        'otp_expired_at' => 'datetime',
     ];
+
+
+    public function createLoginToken($name = 'app')
+    {
+        $token = $this->createToken($name);
+
+        $token->accessToken->host = request()->header('User-Agent');
+        $token->accessToken->ip_address = request()->ip();
+
+        $token->accessToken->update();
+
+        return $token;
+    }
+
+    /**
+     * Hash OTP
+     *
+     * @param mixed $value
+     * @return void
+     */
+    public function setOtpAttribute($value)
+    {
+
+        $this->attributes['otp'] = Hash::make($value);
+    }
+
+    public function resetOtp()
+    {
+        $this->otp = null;
+        $this->otp_expired_at = null;
+        $this->updateQuietly();
+        return $this;
+    }
+
+    public function resetLoginAttempts()
+    {
+        $this->login_attempts = 0;
+        $this->updateQuietly();
+        return $this;
+    }
 }
