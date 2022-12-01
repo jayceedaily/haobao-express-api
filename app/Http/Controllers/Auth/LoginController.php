@@ -54,9 +54,10 @@ class LoginController extends Controller
 
         if (Hash::check($request->otp, $user->otp)) {
 
-            if(\is_null($user->mobile_verified_at)) {
-
+            if(is_null($user->mobile_verified_at)) {
+                $user->verifyMobile();
             }
+
             $user->resetOtp();
             $user->resetLoginAttempts();
 

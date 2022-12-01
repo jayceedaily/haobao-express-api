@@ -2,12 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\RolePermissionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +18,8 @@ use App\Http\Controllers\RolePermissionController;
 |
 */
 
-//  Access Control List
+Route::post('/register', RegisterController::class)->name('auth.register');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::post('/login', LoginController::class)->name('auth.logout');
 
-    Route::middleware([])->apiResource('role', RoleController::class);
-
-    Route::middleware([])->apiResource('permission', PermissionController::class);
-
-    Route::middleware([])->apiResource('role-permission', RolePermissionController::class);
-});
-
-require('api/auth.php');
+Route::delete('/logout', LogoutController::class)->middleware('auth:sanctum')->name('auth.login');
