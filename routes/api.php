@@ -1,12 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Auth\LogoutController;
-use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\RolePermissionController;
 
 /*
@@ -32,3 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 require('api/auth.php');
+require('api/item-category.php');
+require('api/item.php');
+require('api/store.php');
