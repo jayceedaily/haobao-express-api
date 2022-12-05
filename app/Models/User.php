@@ -23,6 +23,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'mobile',
     ];
 
     /**
@@ -35,6 +36,25 @@ class User extends Authenticatable
         'mobile_verified_at' => 'datetime',
         'otp_expired_at' => 'datetime',
     ];
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+
+            if (is_null($user->role_id)) {
+
+                $defaultRole = Role::default();
+
+                $user->role_id = $defaultRole->id;
+            }
+        });
+    }
 
 
     public function createLoginToken($name = 'app')
@@ -73,6 +93,14 @@ class User extends Authenticatable
     {
         $this->login_attempts = 0;
         $this->updateQuietly();
+        return $this;
+    }
+
+    public function verifyMobile()
+    {
+        $this->mobile_verified_at = now();
+        $this->updateQuietly();
+
         return $this;
     }
 }
