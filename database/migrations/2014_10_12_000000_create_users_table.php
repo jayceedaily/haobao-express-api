@@ -26,6 +26,9 @@ return new class extends Migration
             $table->string('otp')->nullable();
             $table->timestamp('otp_expired_at')->nullable();
 
+            $table->foreignId('role_id');
+            $table->foreign('role_id')->references('id')->on('roles');
+
             $table->unsignedBigInteger('login_attempts')->default(0);
 
             $table->timestamps();
