@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('name', 120);
+            $table->text('description')->nullable();
             $table->unsignedBigInteger('price')->nullable();
             $table->unsignedBigInteger('cost')->nullable();
             $table->unsignedBigInteger('stock')->nullable();
@@ -24,6 +25,9 @@ return new class extends Migration
 
             $table->boolean('track_stock')->default(false);
             $table->boolean('sell')->default(true);
+
+            $table->foreignId('modifier_id')->nullable();
+            $table->foreign('modifier_id')->references('id')->on('modifiers');
 
             $table->foreignId('store_id');
             $table->foreign('store_id')->references('id')->on('stores');

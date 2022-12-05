@@ -32,6 +32,7 @@ class StoreItemRequest extends FormRequest
             'track_stock' => 'nullable|boolean',
             'parent_id' => 'nullable|exists:items,id',
             'category_id' => 'nullable|exists:categories,id',
+            'modifier_id' => 'nullable|exists:modifiers,id',
         ];
     }
 }

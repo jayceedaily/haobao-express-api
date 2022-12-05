@@ -31,3 +31,4 @@ require('api/auth.php');
 require('api/item-category.php');
 require('api/item.php');
 require('api/store.php');
+require('api/modifier.php');
