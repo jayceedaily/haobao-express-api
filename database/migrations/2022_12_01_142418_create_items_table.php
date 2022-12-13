@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->string('name', 120);
             $table->text('description')->nullable();
+
             $table->unsignedBigInteger('price')->nullable();
             $table->unsignedBigInteger('cost')->nullable();
             $table->unsignedBigInteger('stock')->nullable();

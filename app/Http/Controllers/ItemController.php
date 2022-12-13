@@ -17,7 +17,11 @@ class ItemController extends Controller
      */
     public function index(Request $request, Store $store)
     {
-        $items = $store->items()->whereNull('parent_id')->with('modifiers.items')->paginate();
+        $items = $store->items()
+                        ->whereNull('parent_id')
+                        ->where('sell', true)
+                        ->with('modifiers.items')
+                        ->paginate();
 
         return response($items);
     }

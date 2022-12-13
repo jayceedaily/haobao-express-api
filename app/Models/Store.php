@@ -28,4 +28,9 @@ class Store extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    public function modifiers()
+    {
+        return $this->hasMany(Modifier::class);
+    }
 }
