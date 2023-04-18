@@ -26,6 +26,8 @@ class User extends Authenticatable
         'mobile',
     ];
 
+    protected $hidden = ['otp', 'otp_expired_at', 'login_attempts'];
+
     /**
      * The attributes that should be cast.
      *
