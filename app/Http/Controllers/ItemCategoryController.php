@@ -17,7 +17,7 @@ class ItemCategoryController extends Controller
      */
     public function index(Store $store)
     {
-        $itemCategories = $store->itemCategories()->simplePaginate();
+        $itemCategories = $store->itemCategories()->latest()->paginate();
 
         return response($itemCategories);
     }
@@ -30,7 +30,7 @@ class ItemCategoryController extends Controller
      */
     public function store(StoreItemCategoryRequest $request, Store $store)
     {
-        if ($request->user->cannot('view', $store)) {
+        if ($request->user()->cannot('view', $store)) {
             abort(403, 'NOT_ALLOWED');
         }
 
@@ -82,7 +82,6 @@ class ItemCategoryController extends Controller
      */
     public function destroy(ItemCategory $itemCategory)
     {
-
         $itemCategory->delete();
 
         return response(['message' => 'ITEM_CATEGORY_DELETED']);

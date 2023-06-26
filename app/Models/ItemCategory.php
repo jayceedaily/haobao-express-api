@@ -22,9 +22,14 @@ class ItemCategory extends Model
         static::deleting(function ($itemCategory) {
 
             $itemCategory->items()->update([
-                'item_category' => null
+                'category_id' => null
             ]);
         });
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'category_id');
     }
 
     public function store()

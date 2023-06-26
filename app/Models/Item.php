@@ -35,4 +35,9 @@ class Item extends Model
     {
         return $this->belongsToMany(Modifier::class);
     }
+
+    public function category()
+    {
+        return $this->belongsTo(ItemCategory::class);
+    }
 }

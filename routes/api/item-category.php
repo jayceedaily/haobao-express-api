@@ -8,13 +8,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Item Category
 
-    Route::apiResource('/item-category', ItemCategoryController::class);
+    // Route::apiResource('/category', ItemCategoryController::class);
+
+    Route::put('/category/{itemCategory}', [ItemCategoryController::class, 'update']);
+    Route::delete('/category/{itemCategory}', [ItemCategoryController::class, 'destroy']);
 
     // Store Item Category
 
     Route::middleware([])->prefix('store/{store}')->group(function () {
 
-        Route::prefix('/item-category')->group(function () {
+        Route::prefix('/category')->group(function () {
 
             Route::get('/', [ItemCategoryController::class, 'index']);
 

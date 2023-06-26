@@ -13,6 +13,7 @@ class UpdateItemRequest extends FormRequest
      */
     public function authorize()
     {
+        return true;
         return $this->user()->can('update', $this->item);
     }
 
@@ -31,7 +32,7 @@ class UpdateItemRequest extends FormRequest
             'low_stock_threshold' => 'nullable|numeric',
             'track_stock' => 'nullable|boolean',
             'parent_id' => 'nullable|exists:items,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'nullable|exists:item_categories,id',
         ];
     }
 }

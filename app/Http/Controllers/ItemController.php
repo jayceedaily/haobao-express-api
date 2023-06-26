@@ -18,10 +18,11 @@ class ItemController extends Controller
     public function index(Request $request, Store $store)
     {
         $items = $store->items()
-                        ->whereNull('parent_id')
-                        ->where('sell', true)
-                        ->with('modifiers.items')
-                        ->paginate();
+            ->whereNull('parent_id')
+            ->where('sell', true)
+            ->with(['modifiers.items', 'category'])
+            ->latest()
+            ->paginate();
 
         return response($items);
     }
@@ -63,6 +64,7 @@ class ItemController extends Controller
     public function update(UpdateItemRequest $request, Item $item)
     {
         $item->update($request->validated());
+        $item->load(['modifiers.items', 'category']);
 
         return response([
             'message' => 'ITEM_UPDATED',
