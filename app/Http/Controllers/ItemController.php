@@ -37,6 +37,8 @@ class ItemController extends Controller
     {
         $item = $store->items()->create($request->validated());
 
+        $item->load(['modifiers.items', 'category']);
+
         return response([
             'message'   => 'ITEM_CREATED',
             'data'      => $item
