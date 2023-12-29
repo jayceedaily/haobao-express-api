@@ -7,44 +7,10 @@ use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request, Store $store)
-    {
-        $items = $store->items()
-            ->whereNull('parent_id')
-            ->where('sell', true)
-            ->with(['modifiers.items', 'category'])
-            ->latest()
-            ->paginate();
-
-        return response($items);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreItemRequest $request, Store $store)
-    {
-        $item = $store->items()->create($request->validated());
-
-        $item->load(['modifiers.items', 'category']);
-
-        return response([
-            'message'   => 'ITEM_CREATED',
-            'data'      => $item
-        ], 201);
-    }
-
     /**
      * Display the specified resource.
      *
@@ -53,7 +19,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return  response(['data' => $item]);
+        return response(['data' => $item->load(['modifiers.items', 'category'])]);
     }
 
     /**
@@ -82,12 +48,12 @@ class ItemController extends Controller
      */
     public function destroy(Request $request, Item $item)
     {
-        if ($request->user()->cannot('delete', $item)) {
-            abort(403, 'NOT_ALLOWED');
-        }
+        // if ($request->user()->cannot('delete', $item)) {
+        //     abort(403, 'NOT_ALLOWED');
+        // }
 
         $item->delete();
 
-        return response(null, 204);
+        return response(null);
     }
 }
